@@ -1,0 +1,15 @@
+{
+  "name": "react-xstate-js",
+  "version": "1.0.1",
+  "description": "A react wrapper for xstate.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "xstate"
+  ],
+  "author": "Brad Woods <brad@bradwoods.io>",
+  "license": "MIT"
+}
