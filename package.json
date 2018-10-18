@@ -1,31 +1,26 @@
 {
   "name": "react-xstate-js",
   "description": "A react wrapper for xstate.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
-  
   "cjs": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "main": "dist/index.umd.js",
-
   "dependencies": {},
   "devDependencies": {
     "rollup": "^0.66.0",
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-node-resolve": "^3.0.0"
   },
-
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "node test/test.js",
     "pretest": "npm run build"
   },
-
   "files": [
     "dist"
   ],
-
   "keywords": [
     "react",
     "xstate"
