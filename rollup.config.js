@@ -1,5 +1,6 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
 
 export default [
@@ -8,13 +9,21 @@ export default [
 		input: 'src/index.js',
 		output: {
 			name: 'index',
-			file: pkg.browser,
+			file: pkg.main,
 			format: 'umd'
 		},
 		plugins: [
 			resolve(), // so Rollup can find `ms`
-			commonjs() // so Rollup can convert `ms` to an ES module
-		]
+			commonjs(), // so Rollup can convert `ms` to an ES module
+			babel({ 
+				// otherwise Babel will convert our modules to CommonJS before Rollup gets a chance to do its thing
+				exclude: 'node_modules/**',
+			})
+		],
+		external: [
+			'react', 
+			'react-proptypes'
+		],
 	},
 
 	// CommonJS (for Node) and ES module (for bundlers) build.
@@ -27,7 +36,7 @@ export default [
 		input: 'src/index.js',
 		external: ['ms'],
 		output: [
-			{ file: pkg.main, format: 'cjs' },
+			{ file: pkg.cjs, format: 'cjs' },
 			{ file: pkg.module, format: 'es' }
 		]
 	}

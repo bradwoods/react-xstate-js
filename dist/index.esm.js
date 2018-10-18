@@ -1,5 +1,5 @@
-const myFunc = () => {
-  console.log('myFunc called');
+var index = () => {
+  console.log(`myFunc called`);
 };
 
-export { myFunc };
+export { index as myFunc };
