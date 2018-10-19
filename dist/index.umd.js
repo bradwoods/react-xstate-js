@@ -1231,7 +1231,8 @@
       var statechart = _this.props.statechart;
       _this.machine = Machine$1(statechart);
       _this.state = {
-        machineStateNode: _this.machine.initialState
+        machineStateNode: _this.machine.initialState,
+        data: {}
       };
       _this.transition = _this.transition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
       _this.triggerActionsCalcData = _this.triggerActionsCalcData.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -1263,6 +1264,7 @@
       value: function triggerActionsCalcData(stateNode, event) {
         var actionMap = this.props.actionMap,
             transition = this.transition;
+        if (!actionMap) return {};
         return stateNode.actions.reduce(function (acc, actionKey) {
           return _objectSpread({}, acc, actionMap[actionKey](event, transition));
         }, {});
@@ -1290,8 +1292,11 @@
     // eslint-disable-next-line
     statechart: PropTypes.object.isRequired,
     // eslint-disable-next-line
-    actionMap: PropTypes.object.isRequired,
+    actionMap: PropTypes.object,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired
+  };
+  MachineComponent.defaultProps = {
+    actionMap: null
   };
 
   exports.Machine = MachineComponent;

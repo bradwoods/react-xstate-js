@@ -50,6 +50,8 @@ class MachineComponent extends Component {
       transition,
     } = this;
 
+    if (!actionMap) return {};
+
     return stateNode.actions.reduce(
       (acc, actionKey) => ({
         ...acc,
@@ -79,8 +81,12 @@ MachineComponent.propTypes = {
   // eslint-disable-next-line
   statechart: PropTypes.object.isRequired,
   // eslint-disable-next-line
-  actionMap: PropTypes.object.isRequired,
+  actionMap: PropTypes.object,
   children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
+};
+
+MachineComponent.defaultProps = {
+  actionMap: null,
 };
 
 export default MachineComponent;
