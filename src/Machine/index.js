@@ -8,7 +8,10 @@ class MachineComponent extends Component {
 
     const { statechart } = this.props;
     this.machine = Machine(statechart);
-    this.state = { machineStateNode: this.machine.initialState };
+    this.state = {
+      machineStateNode: this.machine.initialState,
+      data: {},
+    };
 
     this.transition = this.transition.bind(this);
     this.triggerActionsCalcData = this.triggerActionsCalcData.bind(this);
