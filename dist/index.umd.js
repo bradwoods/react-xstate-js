@@ -1228,7 +1228,8 @@
       _classCallCheck(this, MachineComponent);
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(MachineComponent).call(this, props));
-      _this.machine = Machine$1(_this.props.statechart);
+      var statechart = _this.props.statechart;
+      _this.machine = Machine$1(statechart);
       _this.state = {
         machineStateNode: _this.machine.initialState
       };
@@ -1238,6 +1239,12 @@
     }
 
     _createClass(MachineComponent, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        var machine = this.machine;
+        this.triggerActionsCalcData(machine.initialState, null);
+      }
+    }, {
       key: "transition",
       value: function transition(event) {
         var _this$state = this.state,
@@ -1261,12 +1268,6 @@
         }, {});
       }
     }, {
-      key: "componentDidMount",
-      value: function componentDidMount() {
-        var machine = this.machine;
-        this.triggerActionsCalcData(machine.initialState, null);
-      }
-    }, {
       key: "render",
       value: function render() {
         var children = this.props.children,
@@ -1286,8 +1287,11 @@
   }(react.Component);
 
   MachineComponent.propTypes = {
+    // eslint-disable-next-line
     statechart: PropTypes.object.isRequired,
-    actionMap: PropTypes.object.isRequired
+    // eslint-disable-next-line
+    actionMap: PropTypes.object.isRequired,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired
   };
 
   exports.Machine = MachineComponent;

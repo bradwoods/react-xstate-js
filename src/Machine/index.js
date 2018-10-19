@@ -77,7 +77,7 @@ MachineComponent.propTypes = {
   statechart: PropTypes.object.isRequired,
   // eslint-disable-next-line
   actionMap: PropTypes.object.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
 };
 
 export default MachineComponent;
