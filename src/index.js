@@ -1,5 +1,6 @@
-import Machine from './Machine'
+import Machine from './Machine';
 
 export {
-	Machine
-}
+  // eslint-disable-next-line
+  Machine,
+};
