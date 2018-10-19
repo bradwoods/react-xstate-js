@@ -8,7 +8,8 @@
   "main": "dist/index.umd.js",
   "dependencies": {
     "prop-types": "^15.6.2",
-    "react": "^16.5.2"
+    "react": "^16.5.2",
+    "xstate": "^3.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
