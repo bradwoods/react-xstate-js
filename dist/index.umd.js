@@ -7,7 +7,7 @@
   React = React && React.hasOwnProperty('default') ? React['default'] : React;
 
   var index = (function () {
-    console.log("myFunc called thjjj");
+    console.log("myFunc called");
   });
 
   var index$1 = (function () {
