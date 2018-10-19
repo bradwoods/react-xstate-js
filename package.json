@@ -5,7 +5,7 @@
   "license": "MIT",
   "cjs": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "main": "dist/index.umd.js",
+  "main": "src/index",
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.5.2"

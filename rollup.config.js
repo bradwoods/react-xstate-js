@@ -16,12 +16,12 @@ export default [
 		},
 		plugins: [
 			resolve(), // so Rollup can find `ms`
-			commonjs(), // so Rollup can convert `ms` to an ES module
 			babel({ 
 				// otherwise Babel will convert our modules to CommonJS before Rollup gets a chance to do its thing
 				exclude: 'node_modules/**',
 				presets: ['@babel/env', '@babel/preset-react']
-			})
+			}),
+			commonjs(), // so Rollup can convert `ms` to an ES module
 		],
 		external: [
 			'react',
