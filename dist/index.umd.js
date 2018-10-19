@@ -1290,7 +1290,7 @@
     actionMap: PropTypes.object.isRequired
   };
 
-  exports.MachineComponent = MachineComponent;
+  exports.Machine = MachineComponent;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

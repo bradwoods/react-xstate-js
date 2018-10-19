@@ -1,5 +1,5 @@
-import MachineComponent from './MachineComponent'
+import Machine from './Machine'
 
 export {
-	MachineComponent
+	Machine
 }
