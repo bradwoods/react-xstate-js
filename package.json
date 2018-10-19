@@ -1,6 +1,7 @@
 {
   "name": "react-xstate-js",
   "description": "A react wrapper for xstate.",
+  "author": "Brad Woods <brad@bradwoods.io> (https://bradwoods.io)",
   "version": "1.0.2",
   "license": "MIT",
   "cjs": "dist/index.cjs.js",
@@ -36,7 +37,10 @@
   ],
   "keywords": [
     "react",
-    "xstate"
-  ],
-  "author": "Brad Woods <brad@bradwoods.io>"
+    "xstate",
+    "statechart",
+    "state machine",
+    "finite state machine",
+    "finite automata"
+  ]
 }
