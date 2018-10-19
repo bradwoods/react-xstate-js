@@ -3,6 +3,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
 
+// https://codeburst.io/deploy-react-component-as-an-npm-library-d396efc25122
+
 export default [
 	// browser-friendly UMD build
 	{
@@ -18,12 +20,16 @@ export default [
 			babel({ 
 				// otherwise Babel will convert our modules to CommonJS before Rollup gets a chance to do its thing
 				exclude: 'node_modules/**',
+				presets: ['@babel/env', '@babel/preset-react']
 			})
 		],
 		external: [
-			'react', 
-			'react-proptypes'
+			'react',
+			'prop-types',
 		],
+		globals: {
+			react: "React"
+		}
 	},
 
 	// CommonJS (for Node) and ES module (for bundlers) build.
@@ -32,12 +38,12 @@ export default [
 	// builds from a single configuration where possible, using
 	// an array for the `output` option, where we can specify 
 	// `file` and `format` for each target)
-	{
-		input: 'src/index.js',
-		external: ['ms'],
-		output: [
-			{ file: pkg.cjs, format: 'cjs' },
-			{ file: pkg.module, format: 'es' }
-		]
-	}
+	// {
+	// 	input: 'src/index.js',
+	// 	external: ['ms'],
+	// 	output: [
+	// 		{ file: pkg.cjs, format: 'cjs' },
+	// 		{ file: pkg.module, format: 'es' }
+	// 	]
+	// }
 ];

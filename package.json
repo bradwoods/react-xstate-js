@@ -8,13 +8,13 @@
   "main": "dist/index.umd.js",
   "dependencies": {
     "prop-types": "^15.6.2",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react": "^16.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-external-helpers": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "babel-preset-react": "^6.24.1",
+    "@babel/preset-react": "^7.0.0",
     "rollup": "^0.66.0",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.1.0",
