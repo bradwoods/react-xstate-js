@@ -2,7 +2,7 @@
   "name": "react-xstate-js",
   "description": "A react wrapper for xstate.",
   "author": "Brad Woods <brad@bradwoods.io> (https://bradwoods.io)",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "cjs": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
