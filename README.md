@@ -18,7 +18,8 @@ A playground with the following examples can be found [here](https://github.com/
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const statechart = {
+// a xstate machine config (http://davidkpiano.github.io/xstate/docs/#/api/config)
+const config = {
   key: 'example1',
   initial: 'step1',
   states: {
@@ -42,7 +43,7 @@ const statechart = {
 };
 
 const MyComponent = () => (
-  <Machine statechart={statechart}>
+  <Machine config={config}>
     {({ transition, state }) => (
     <>
       <button
@@ -73,7 +74,7 @@ const MyComponent = () => (
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const statechart = {
+const config = {
   key: 'example2',
   initial: 'step1',
   states: {
@@ -97,6 +98,7 @@ const statechart = {
   },
 };
 
+// an object that maps actions defined in the config to functions you want those actions to trigger (http://davidkpiano.github.io/xstate/docs/#/api/actions)
 const actionMap = {
   myAction: () => {
     console.log('myAction fired');
@@ -105,7 +107,7 @@ const actionMap = {
 
 const MyComponent = () => (
   <Machine
-    statechart={statechart}
+    config={config}
     actionMap={actionMap}
   >
     {({ transition, state }) => (
@@ -138,7 +140,7 @@ const MyComponent = () => (
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const statechart = {
+const config = {
   key: 'example3',
   initial: 'step1',
   states: {
@@ -163,7 +165,7 @@ const statechart = {
 };
 
 const actionMap = {
-  // actions receive an event and transition parameter (incase they need to read event data or fire a transition)
+  // actions receive an event & transition parameter (incase the action's function needs to read event data or fire a transition)
   myAction: (event, transition) => {
     console.log('myAction fired');
     setTimeout(
@@ -175,7 +177,7 @@ const actionMap = {
 
 const MyComponent = () => (
   <Machine
-    statechart={statechart}
+    config={config}
     actionMap={actionMap}
   >
     {({ transition, state }) => (
@@ -209,14 +211,14 @@ import React from 'react';
 import { Machine } from 'react-xstate-js';
 
 const actionMap = {
-  // anything returned from the actionMap will be stored in the data property (this is useful for scenario where an action triggers an async call that fetches data)
+  // anything returned from the actionMap will be stored in the data property (this is useful for scenarios where an action triggers an async call that fetches data)
   myAction: () => {
     console.log('myAction fired');
     return { foo: 'bar' };
   },
 };
 
-const statechart = {
+const config = {
   key: 'example4',
   initial: 'step1',
   states: {
@@ -242,7 +244,7 @@ const statechart = {
 
 const MyComponent = () => (
   <Machine
-    statechart={statechart}
+    config={config}
     actionMap={actionMap}
   >
     // data contains anything returned from the actionMap
@@ -277,30 +279,78 @@ const MyComponent = () => (
 ```
 
 # API
+## \<Machine \/\>
+
+A [React](https://reactjs.org/) renderProp style wrapper around [xstate](https://github.com/davidkpiano/xstate).
+
 ```js
 <Machine
-  statechart={...}
+  config={...}
   actionMap={...}
 >
   {({ transition, state, data }) => (
-
+    ...
   )}
 </Machine>
 ```
-A React renderProp style wrapper around Xstate.
 
-## Props
-### statechart: object
-A [xstate configuration schema](http://davidkpiano.github.io/xstate/docs/#/api/config).
+### Props
+#### config: object
+A xstate [machine config](http://davidkpiano.github.io/xstate/docs/#/api/config).
 
-### actionMap: object
-An object with: 
-- key: string - corresponding with 1 of the config's actions
-- value: function - the function you want to trigger for an action
+```js
+const config = {
+  key: 'example1',
+  initial: 'step1',
+  states: {
+    step1: {
+      on: {
+        NEXT: 'step2',
+      },
+    },
+    step2: {
+      on: {
+        PREVIOUS: 'step1',
+        NEXT: 'step3',
+      },
+    },
+    step3: {
+      on: {
+        PREVIOUS: 'step2',
+      },
+    },
+  },
+};
+```
 
-this needs to be more details, talk about the props it has
+#### actionMap: object
+An object that maps [actions](http://davidkpiano.github.io/xstate/docs/#/api/actions) defined in the config to functions you want those actions to trigger:
+- key: string
+- value: function
 
-## Returns
-### transition: function
-### state: string | object
-### data: object
+Anything returned from an action's function will be stored in the data property.
+
+```js
+const actionMap = {
+  myAction: () => {
+    console.log('myAction fired');
+  },
+};
+```
+
+### Return
+#### transition: function
+Call this function passing in an object with the following properties:
+- type: [event](http://davidkpiano.github.io/xstate/docs/#/api/config?id=transition-configuration)
+- any other properties/ values that may be required of the actionMap functions (example: email & password for a sign-in function).
+
+```js
+transition({ type: 'PREVIOUS' })
+```
+
+
+#### state: string | object
+The current state.
+
+#### data: object
+Provides access to anything returned from the actionMap's functions.
