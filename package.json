@@ -3,7 +3,7 @@
   "description": "A React interpreter for xstate.",
   "author": "Brad Woods <brad@bradwoods.io> (https://bradwoods.io)",
   "homepage": "https://github.com/bradwoods/react-xstate-js",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MIT",
   "cjs": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
