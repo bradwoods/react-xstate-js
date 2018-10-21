@@ -1,5 +1,5 @@
 # react-xstate-js
-A React wrapper for [xstate](https://github.com/davidkpiano/xstate).
+A React interpreter for [xstate](https://github.com/davidkpiano/xstate).
 
 # Installation
 ```bash
@@ -44,17 +44,17 @@ const config = {
 
 const MyComponent = () => (
   <Machine config={config}>
-    {({ transition, state }) => (
+    {({ send, state }) => (
     <>
       <button
         type="button"
-        onClick={() => transition({ type: 'PREVIOUS' })}
+        onClick={() => send({ type: 'PREVIOUS' })}
       >
         previous
       </button>
       <button
         type="button"
-        onClick={() => transition({ type: 'NEXT' })}
+        onClick={() => send({ type: 'NEXT' })}
       >
         next
       </button>
@@ -110,17 +110,17 @@ const MyComponent = () => (
     config={config}
     actionMap={actionMap}
   >
-    {({ transition, state }) => (
+    {({ send, state }) => (
     <>
       <button
         type="button"
-        onClick={() => transition({ type: 'PREVIOUS' })}
+        onClick={() => send({ type: 'PREVIOUS' })}
       >
         previous
       </button>
       <button
         type="button"
-        onClick={() => transition({ type: 'NEXT' })}
+        onClick={() => send({ type: 'NEXT' })}
       >
         next
       </button>
@@ -135,7 +135,7 @@ const MyComponent = () => (
 );
 ```
 
-## Example 3 - an action triggering a transition
+## Example 3 - an action changing the state
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
@@ -165,11 +165,11 @@ const config = {
 };
 
 const actionMap = {
-  // actions receive an event & transition parameter (incase the action's function needs to read event data or fire a transition)
-  myAction: (event, transition) => {
+  // actions receive event & send parameters (incase the action's function needs to read event data or change the state)
+  myAction: (event, send) => {
     console.log('myAction fired');
     setTimeout(
-      () => transition({ type: 'NEXT' }),
+      () => send({ type: 'NEXT' }),
       500,
     );
   },
@@ -180,17 +180,17 @@ const MyComponent = () => (
     config={config}
     actionMap={actionMap}
   >
-    {({ transition, state }) => (
+    {({ send, state }) => (
     <>
       <button
         type="button"
-        onClick={() => transition({ type: 'PREVIOUS' })}
+        onClick={() => send({ type: 'PREVIOUS' })}
       >
         previous
       </button>
       <button
         type="button"
-        onClick={() => transition({ type: 'NEXT' })}
+        onClick={() => send({ type: 'NEXT' })}
       >
         next
       </button>
@@ -248,17 +248,17 @@ const MyComponent = () => (
     actionMap={actionMap}
   >
     // data contains anything returned from the actionMap
-    {({ transition, state, data }) => (
+    {({ send, state, data }) => (
     <>
       <button
         type="button"
-        onClick={() => transition({ type: 'PREVIOUS' })}
+        onClick={() => send({ type: 'PREVIOUS' })}
       >
         previous
       </button>
       <button
         type="button"
-        onClick={() => transition({ type: 'NEXT' })}
+        onClick={() => send({ type: 'NEXT' })}
       >
         next
       </button>
@@ -286,7 +286,7 @@ A [React](https://reactjs.org/) renderProp style wrapper around [xstate](https:/
   config={...}
   actionMap={...}
 >
-  {({ transition, state, data }) => (
+  {({ send, state, data }) => (
     ...
   )}
 </Machine>
@@ -324,23 +324,23 @@ const config = {
 An object that maps [actions](http://davidkpiano.github.io/xstate/docs/#/api/actions) defined in the config to functions you want those actions to trigger:
 - key: string
 - value: function
-Functions receive an event & transition parameter (incase the action's function needs to read event data or fire a transition). Anything returned from an action's function will be stored in the `<Machine />`'s data object (see below).
+Functions receive an event & send parameter (incase the action's function needs to read event data or change the state). Anything returned from an action's function will be stored in the `<Machine />`'s data object (see below).
 ```js
 const actionMap = {
-  myAction: (event, transition) => {
+  myAction: (event, send) => {
     console.log('myAction fired');
   },
 };
 ```
 
 ### Return
-#### transition: function
+#### send: function
 Call this function passing in an object with the following properties:
 - type: [event](http://davidkpiano.github.io/xstate/docs/#/api/config?id=transition-configuration)
 - any other properties/ values that may be required of the actionMap functions (example: email & password for a sign-in function).
 
 ```js
-transition({ type: 'NEXT' })
+send({ type: 'NEXT' })
 ```
 
 #### state: string | object
