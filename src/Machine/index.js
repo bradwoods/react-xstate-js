@@ -6,8 +6,8 @@ class MachineComponent extends Component {
   constructor(props) {
     super(props);
 
-    const { statechart } = this.props;
-    this.machine = Machine(statechart);
+    const { config } = this.props;
+    this.machine = Machine(config);
     this.state = {
       machineStateNode: this.machine.initialState,
       data: {},
@@ -79,7 +79,7 @@ class MachineComponent extends Component {
 
 MachineComponent.propTypes = {
   // eslint-disable-next-line
-  statechart: PropTypes.object.isRequired,
+  config: PropTypes.object.isRequired,
   // eslint-disable-next-line
   actionMap: PropTypes.object,
   children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,

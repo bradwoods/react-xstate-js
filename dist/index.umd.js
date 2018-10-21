@@ -1228,8 +1228,8 @@
       _classCallCheck(this, MachineComponent);
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(MachineComponent).call(this, props));
-      var statechart = _this.props.statechart;
-      _this.machine = Machine$1(statechart);
+      var config = _this.props.config;
+      _this.machine = Machine$1(config);
       _this.state = {
         machineStateNode: _this.machine.initialState,
         data: {}
@@ -1290,7 +1290,7 @@
 
   MachineComponent.propTypes = {
     // eslint-disable-next-line
-    statechart: PropTypes.object.isRequired,
+    config: PropTypes.object.isRequired,
     // eslint-disable-next-line
     actionMap: PropTypes.object,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired
