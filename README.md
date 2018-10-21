@@ -280,7 +280,7 @@ const MyComponent = () => (
 
 # API
 ## \<Machine \/\>
-A [React](https://reactjs.org/) renderProp style wrapper around [xstate](https://github.com/davidkpiano/xstate).
+A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davidkpiano/xstate).
 ```js
 <Machine
   config={...}
