@@ -1,6 +1,6 @@
 {
   "name": "react-xstate-js",
-  "description": "A react wrapper for xstate.",
+  "description": "A React wrapper for xstate using renderProps.",
   "author": "Brad Woods <brad@bradwoods.io> (https://bradwoods.io)",
   "version": "1.0.4",
   "license": "MIT",
