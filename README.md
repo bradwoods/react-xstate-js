@@ -211,7 +211,7 @@ import React from 'react';
 import { Machine } from 'react-xstate-js';
 
 const actionMap = {
-  // anything returned from the actionMap will be stored in the data property (this is useful for scenarios where an action triggers an async call that fetches data)
+  // anything returned from the actionMap will be stored in the data property (this is useful for scenarios where an action triggers a function that fetches data)
   myAction: () => {
     console.log('myAction fired');
     return { foo: 'bar' };
@@ -280,9 +280,7 @@ const MyComponent = () => (
 
 # API
 ## \<Machine \/\>
-
 A [React](https://reactjs.org/) renderProp style wrapper around [xstate](https://github.com/davidkpiano/xstate).
-
 ```js
 <Machine
   config={...}
@@ -297,7 +295,6 @@ A [React](https://reactjs.org/) renderProp style wrapper around [xstate](https:/
 ### Props
 #### config: object
 A xstate [machine config](http://davidkpiano.github.io/xstate/docs/#/api/config).
-
 ```js
 const config = {
   key: 'example1',
@@ -327,12 +324,10 @@ const config = {
 An object that maps [actions](http://davidkpiano.github.io/xstate/docs/#/api/actions) defined in the config to functions you want those actions to trigger:
 - key: string
 - value: function
-
-Anything returned from an action's function will be stored in the data property.
-
+Functions receive an event & transition parameter (incase the action's function needs to read event data or fire a transition). Anything returned from an action's function will be stored in the `<Machine />`'s data object (see below).
 ```js
 const actionMap = {
-  myAction: () => {
+  myAction: (event, transition) => {
     console.log('myAction fired');
   },
 };
@@ -345,9 +340,8 @@ Call this function passing in an object with the following properties:
 - any other properties/ values that may be required of the actionMap functions (example: email & password for a sign-in function).
 
 ```js
-transition({ type: 'PREVIOUS' })
+transition({ type: 'NEXT' })
 ```
-
 
 #### state: string | object
 The current state.
