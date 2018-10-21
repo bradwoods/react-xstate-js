@@ -1234,7 +1234,7 @@
         machineStateNode: _this.machine.initialState,
         data: {}
       };
-      _this.transition = _this.transition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+      _this.send = _this.send.bind(_assertThisInitialized(_assertThisInitialized(_this)));
       _this.triggerActionsCalcData = _this.triggerActionsCalcData.bind(_assertThisInitialized(_assertThisInitialized(_this)));
       return _this;
     }
@@ -1246,8 +1246,8 @@
         this.triggerActionsCalcData(machine.initialState, null);
       }
     }, {
-      key: "transition",
-      value: function transition(event) {
+      key: "send",
+      value: function send$$1(event) {
         var _this$state = this.state,
             currentData = _this$state.data,
             currentStateNode = _this$state.machineStateNode,
@@ -1263,10 +1263,10 @@
       key: "triggerActionsCalcData",
       value: function triggerActionsCalcData(stateNode, event) {
         var actionMap = this.props.actionMap,
-            transition = this.transition;
+            send$$1 = this.send;
         if (!actionMap) return {};
         return stateNode.actions.reduce(function (acc, actionKey) {
-          return _objectSpread({}, acc, actionMap[actionKey](event, transition));
+          return _objectSpread({}, acc, actionMap[actionKey](event, send$$1));
         }, {});
       }
     }, {
@@ -1276,9 +1276,9 @@
             _this$state2 = this.state,
             machineStateNode = _this$state2.machineStateNode,
             data = _this$state2.data,
-            transition = this.transition;
+            send$$1 = this.send;
         return children({
-          transition: transition,
+          send: send$$1,
           state: machineStateNode.value,
           data: data
         });

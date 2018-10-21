@@ -13,7 +13,7 @@ class MachineComponent extends Component {
       data: {},
     };
 
-    this.transition = this.transition.bind(this);
+    this.send = this.send.bind(this);
     this.triggerActionsCalcData = this.triggerActionsCalcData.bind(this);
   }
 
@@ -23,7 +23,7 @@ class MachineComponent extends Component {
     this.triggerActionsCalcData(machine.initialState, null);
   }
 
-  transition(event) {
+  send(event) {
     const {
       state: {
         data: currentData,
@@ -47,7 +47,7 @@ class MachineComponent extends Component {
   triggerActionsCalcData(stateNode, event) {
     const {
       props: { actionMap },
-      transition,
+      send,
     } = this;
 
     if (!actionMap) return {};
@@ -55,8 +55,8 @@ class MachineComponent extends Component {
     return stateNode.actions.reduce(
       (acc, actionKey) => ({
         ...acc,
-        // takes in the event data & a transition function incase the action will dispatch more events.
-        ...actionMap[actionKey](event, transition),
+        // takes in the event data & the send function incase the action dispatchs more events.
+        ...actionMap[actionKey](event, send),
       }),
       {},
     );
@@ -66,11 +66,11 @@ class MachineComponent extends Component {
     const {
       props: { children },
       state: { machineStateNode, data },
-      transition,
+      send,
     } = this;
 
     return children({
-      transition,
+      send,
       state: machineStateNode.value,
       data,
     });
