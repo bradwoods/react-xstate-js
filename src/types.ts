@@ -26,6 +26,7 @@ export interface IReturnProps {
 export interface IProps {
   config: MachineConfig | ParallelMachineConfig
   actionMap?: IActionMap
+  defaultData? : IData
   children: (args: IReturnProps) => JSX.Element
 }
 

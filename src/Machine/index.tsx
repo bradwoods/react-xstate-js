@@ -6,9 +6,7 @@ import {
   Machine as XstateMachineType, StateInterface,
 } from 'xstate/lib/types'
 import {
-  IEvent,
-  IState,
-  IProps,
+  IEvent, IState, IProps,
 } from '../types'
 
 class Machine extends React.Component<IProps, IState> {
@@ -17,7 +15,7 @@ class Machine extends React.Component<IProps, IState> {
 
   readonly state: IState = {
     machineStateNode: this.machine.initialState,
-    data: {},
+    data: this.props.defaultData || {},
   }
 
   componentDidMount() {
@@ -26,17 +24,17 @@ class Machine extends React.Component<IProps, IState> {
     } = this;
     const stateNode = machine.initialState
 
-    this.setState({
+    this.setState((state: IState) => ({
       data: {
+        ...state.data,
         ...triggerActionsCalcData(stateNode, undefined)
       }
-    })
+    }))
   }
 
   private send = (event: IEvent) => {
     const {
       state: {
-        data: currentData,
         machineStateNode: currentStateNode,
       },
       triggerActionsCalcData,
@@ -45,13 +43,13 @@ class Machine extends React.Component<IProps, IState> {
     const nextStateNode = this.machine.transition(currentStateNode, event.type);
     const newData = triggerActionsCalcData(nextStateNode, event);
 
-    this.setState({
+    this.setState((state: IState) => ({
       machineStateNode: nextStateNode,
       data: {
-        ...currentData,
+        ...state.data,
         ...newData,
       },
-    });
+    }));
   }
 
   // event is optional as the initialState may have actions (and there is no event required to get to initial state)
