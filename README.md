@@ -84,7 +84,9 @@ const config = {
       },
     },
     step2: {
-      onEntry: 'myAction',
+      onEntry: [
+        { type: 'myAction' },
+      ],
       on: {
         PREVIOUS: 'step1',
         NEXT: 'step3',
@@ -135,7 +137,7 @@ const MyComponent = () => (
 );
 ```
 
-## Example 3 - an action changing the state
+## Example 3 - an action's function changing the state
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
@@ -150,7 +152,9 @@ const config = {
       },
     },
     step2: {
-      onEntry: 'myAction',
+      onEntry: [
+        { type: 'myAction' },
+      ],
       on: {
         PREVIOUS: 'step1',
         NEXT: 'step3',
@@ -165,7 +169,7 @@ const config = {
 };
 
 const actionMap = {
-  // actions receive event & send parameters (incase the action's function needs to read event data or change the state)
+  // actions receive an event & send parameter (incase the action's function needs to read event data or change the state)
   myAction: (event, send) => {
     console.log('myAction fired');
     setTimeout(
@@ -205,7 +209,7 @@ const MyComponent = () => (
 );
 ```
 
-## Example 4 - storing data
+## Example 4 - an action's function returning data
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
@@ -228,7 +232,9 @@ const config = {
       },
     },
     step2: {
-      onEntry: 'myAction',
+      onEntry: [
+        { type: 'myAction' },
+      ],
       on: {
         PREVIOUS: 'step1',
         NEXT: 'step3',
