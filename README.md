@@ -61,7 +61,7 @@ const MyComponent = () => (
       <p>
         state:
         {' '}
-        {state}
+        {JSON.stringify(state)}
       </p>
     </>
     )}
@@ -129,7 +129,7 @@ const MyComponent = () => (
       <p>
         state:
         {' '}
-        {state}
+        {JSON.stringify(state)}
       </p>
     </>
     )}
@@ -201,7 +201,7 @@ const MyComponent = () => (
       <p>
         state:
         {' '}
-        {state}
+        {JSON.stringify(state)}
       </p>
     </>
     )}
@@ -271,7 +271,7 @@ const MyComponent = () => (
       <p>
         state:
         {' '}
-        {state}
+        {JSON.stringify(state)}
       </p>
       <p>
         data:
@@ -349,7 +349,7 @@ const MyComponent = () => (
       <p>
         state:
         {' '}
-        {state}
+        {JSON.stringify(state)}
       </p>
       <p>
         data:
