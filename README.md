@@ -284,6 +284,84 @@ const MyComponent = () => (
 );
 ```
 
+## Example 5 - using the defaultData prop
+```js
+import React from 'react';
+import { Machine } from 'react-xstate-js';
+
+const defaultData = {
+  foo: 'defaultValue',
+};
+
+const actionMap = {
+  myAction: () => {
+    console.log('myAction fired');
+    return { foo: 'bar' };
+  },
+};
+
+const config = {
+  key: 'example5',
+  initial: 'step1',
+  states: {
+    step1: {
+      on: {
+        NEXT: 'step2',
+      },
+    },
+    step2: {
+      onEntry: [
+        { type: 'myAction' },
+      ],
+      on: {
+        PREVIOUS: 'step1',
+        NEXT: 'step3',
+      },
+    },
+    step3: {
+      on: {
+        PREVIOUS: 'step2',
+      },
+    },
+  },
+};
+
+const MyComponent = () => (
+  <Machine
+    config={config}
+    actionMap={actionMap}
+    defaultData={defaultData}
+  >
+    {({ send, state, data }) => (
+    <>
+      <button
+        type="button"
+        onClick={() => send({ type: 'PREVIOUS' })}
+      >
+        previous
+      </button>
+      <button
+        type="button"
+        onClick={() => send({ type: 'NEXT' })}
+      >
+        next
+      </button>
+      <p>
+        state:
+        {' '}
+        {state}
+      </p>
+      <p>
+        data:
+        {' '}
+        {JSON.stringify(data)}
+      </p>
+    </>
+    )}
+  </Machine>
+);
+```
+
 # API
 ## \<Machine \/\>
 A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davidkpiano/xstate).
@@ -291,6 +369,7 @@ A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davi
 <Machine
   config={...}
   actionMap={...}
+  defaultData={...}
 >
   {({ send, state, data }) => (
     ...
@@ -336,6 +415,14 @@ const actionMap = {
   myAction: (event, send) => {
     console.log('myAction fired');
   },
+};
+```
+
+#### defaultData: object
+The default value of data (useful for setting the initial values of input elements) 
+```js
+const defaultData = {
+  foo: 'defaultValue'
 };
 ```
 
