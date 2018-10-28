@@ -290,7 +290,7 @@ import React from 'react';
 import { Machine } from 'react-xstate-js';
 
 const defaultData = {
-  foo: 'defaultValue',
+  foo: 'myDefaultValue',
 };
 
 const actionMap = {
