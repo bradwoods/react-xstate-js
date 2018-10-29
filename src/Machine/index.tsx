@@ -35,12 +35,15 @@ class Machine extends React.Component<IProps, IState> {
   private send = (event: IEvent) => {
     const {
       state: {
-        machineStateNode: currentStateNode,
+        machineStateNode: currentStateNode, data,
       },
       triggerActionsCalcData,
     } = this;
-
-    const nextStateNode = this.machine.transition(currentStateNode, event.type);
+    const fullState = {
+      machine: currentStateNode,
+      ...data,
+    }
+    const nextStateNode = this.machine.transition(currentStateNode, event, fullState);
     const newData = triggerActionsCalcData(nextStateNode, event);
 
     this.setState((state: IState) => ({
