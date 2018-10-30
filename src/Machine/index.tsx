@@ -3,7 +3,8 @@ import {
   Machine as XstateMachine
 } from 'xstate';
 import {
-  Machine as XstateMachineType, StateInterface,
+  // Machine as XstateMachineType,
+  StateInterface,
 } from 'xstate/lib/types'
 import {
   IEvent, IState, IProps,
@@ -11,7 +12,9 @@ import {
 
 class Machine extends React.Component<IProps, IState> {
 
-  private machine: XstateMachineType = XstateMachine(this.props.config)
+  // since migrating to xstate v4, using XstateMachineType us throwing an error
+  // private machine: XstateMachineType = XstateMachine(this.props.config)
+  private machine: any = XstateMachine(this.props.config)
 
   readonly state: IState = {
     machineStateNode: this.machine.initialState,
