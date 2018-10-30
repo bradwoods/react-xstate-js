@@ -21,22 +21,31 @@ import { Machine } from 'react-xstate-js';
 // a xstate machine config (http://davidkpiano.github.io/xstate/docs/#/api/config)
 const config = {
   key: 'example1',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
       on: {
-        NEXT: 'step2',
+        NEXT: {
+          target: 'step2',
+        },
       },
     },
     step2: {
       on: {
-        PREVIOUS: 'step1',
-        NEXT: 'step3',
+        PREVIOUS: {
+          target: 'step1',
+        },
+        NEXT: {
+          target: 'step3',
+        },
       },
     },
     step3: {
       on: {
-        PREVIOUS: 'step2',
+        PREVIOUS: {
+          target: 'step2',
+        },
       },
     },
   },
@@ -76,25 +85,32 @@ import { Machine } from 'react-xstate-js';
 
 const config = {
   key: 'example2',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
       on: {
-        NEXT: 'step2',
+        NEXT: {
+          target: 'step2',
+        },
       },
     },
     step2: {
-      onEntry: [
-        { type: 'myAction' },
-      ],
+      onEntry: ['myAction'],
       on: {
-        PREVIOUS: 'step1',
-        NEXT: 'step3',
+        PREVIOUS: {
+          target: 'step1',
+        },
+        NEXT: {
+          target: 'step3',
+        },
       },
     },
     step3: {
       on: {
-        PREVIOUS: 'step2',
+        PREVIOUS: {
+          target: 'step2',
+        },
       },
     },
   },
@@ -144,25 +160,32 @@ import { Machine } from 'react-xstate-js';
 
 const config = {
   key: 'example3',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
       on: {
-        NEXT: 'step2',
+        NEXT: {
+          target: 'step2',
+        },
       },
     },
     step2: {
-      onEntry: [
-        { type: 'myAction' },
-      ],
+      onEntry: ['myAction'],
       on: {
-        PREVIOUS: 'step1',
-        NEXT: 'step3',
+        PREVIOUS: {
+          target: 'step1',
+        },
+        NEXT: {
+          target: 'step3',
+        },
       },
     },
     step3: {
       on: {
-        PREVIOUS: 'step2',
+        PREVIOUS: {
+          target: 'step2',
+        },
       },
     },
   },
@@ -224,25 +247,32 @@ const actionMap = {
 
 const config = {
   key: 'example4',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
       on: {
-        NEXT: 'step2',
+        NEXT: {
+          target: 'step2',
+        },
       },
     },
     step2: {
-      onEntry: [
-        { type: 'myAction' },
-      ],
+      onEntry: ['myAction'],
       on: {
-        PREVIOUS: 'step1',
-        NEXT: 'step3',
+        PREVIOUS: {
+          target: 'step1',
+        },
+        NEXT: {
+          target: 'step3',
+        },
       },
     },
     step3: {
       on: {
-        PREVIOUS: 'step2',
+        PREVIOUS: {
+          target: 'step2',
+        },
       },
     },
   },
@@ -302,25 +332,32 @@ const actionMap = {
 
 const config = {
   key: 'example5',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
       on: {
-        NEXT: 'step2',
+        NEXT: {
+          target: 'step2',
+        },
       },
     },
     step2: {
-      onEntry: [
-        { type: 'myAction' },
-      ],
+      onEntry: ['myAction'],
       on: {
-        PREVIOUS: 'step1',
-        NEXT: 'step3',
+        PREVIOUS: {
+          target: 'step1',
+        },
+        NEXT: {
+          target: 'step3',
+        },
       },
     },
     step3: {
       on: {
-        PREVIOUS: 'step2',
+        PREVIOUS: {
+          target: 'step2',
+        },
       },
     },
   },
