@@ -3,7 +3,8 @@ import {
   Machine as XstateMachine,
 } from 'xstate';
 import {
-  Machine as XstateMachineType, StateInterface,
+  // Machine as XstateMachineType,
+  StateInterface,
 } from 'xstate/lib/types'
 import {
   IEvent, IState, IProps,
@@ -11,7 +12,9 @@ import {
 
 class Machine extends React.Component<IProps, IState> {
 
-  private machine: XstateMachineType = XstateMachine(this.props.config)
+  // as of xstate v4, XstateMachine requires 3 arguments, however documentation states 2 arguments should be optional, using type: any as workaround
+  // private machine: XstateMachineType = XstateMachine(this.props.config)
+  private machine: any = XstateMachine(this.props.config)
 
   readonly state: IState = {
     machineStateNode: this.machine.initialState,
@@ -64,28 +67,13 @@ class Machine extends React.Component<IProps, IState> {
 
     if (!actionMap) return {};
 
-    // actions can be an array of strings: ['myAction1', 'myAction2'] or [{ type: 'myAction1' }, { type: 'myAction2' }]
-
     return stateNode.actions.reduce(
-      (acc, action) => {
-
-        if (typeof action === 'string') {
-          return {
-            ...acc,
-            // takes in the event data & the send function incase the action dispatchs more events.
-            ...actionMap[action](event, send),
-          }
-        } else if (typeof action === 'object') {
-          return {
-            ...acc,
-            ...actionMap[action.type](event, send),
-          }
-        }
-
-        return { ...acc }
-      },
+      (acc, action) => ({
+        ...acc,
+        ...actionMap[action.type](event, send),
+      }),
       {},
-    );
+    )
   }
 
   render() {

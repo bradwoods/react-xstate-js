@@ -1,9 +1,10 @@
 import {
-  MachineConfig, ParallelMachineConfig, StateInterface,
+  // MachineConfig, ParallelMachineConfig,
+  StateInterface
 } from 'xstate/lib/types'
 
 export interface IEvent {
-  type: string,
+  type: string
   [key: string]: any
 }
 
@@ -24,9 +25,11 @@ export interface IReturnProps {
 }
 
 export interface IProps {
-  config: MachineConfig | ParallelMachineConfig
+  // see workaround stated in ./Machine/index.tsx
+  // config: MachineConfig | ParallelMachineConfig
+  config: any
   actionMap?: IActionMap
-  defaultData? : IData
+  defaultData?: IData
   children: (args: IReturnProps) => JSX.Element
 }
 

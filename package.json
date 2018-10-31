@@ -129,6 +129,6 @@
   },
   "dependencies": {
     "react": "^16.6.0",
-    "xstate": "3.3.3"
+    "xstate": "^4.0.1"
   }
 }
