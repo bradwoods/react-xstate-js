@@ -1,5 +1,5 @@
 # react-xstate-js
-A React interpreter for [xstate](https://github.com/davidkpiano/xstate).
+A React interpreter for [xstate](https://github.com/davidkpiano/xstate) that uses renderProps.
 
 # Installation
 ```bash
@@ -18,8 +18,7 @@ A playground with the following examples can be found [here](https://github.com/
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-// a xstate machine config (http://davidkpiano.github.io/xstate/docs/#/api/config)
-const config = {
+const machineConfig = {
   key: 'example1',
   strict: true,
   initial: 'step1',
@@ -44,25 +43,25 @@ const config = {
 };
 
 const MyComponent = () => (
-  <Machine config={config}>
-    {({ send, state }) => (
+  <Machine config={machineConfig}>
+    {({ service, state }) => (
     <>
       <button
         type="button"
-        onClick={() => send({ type: 'PREVIOUS' })}
+        onClick={() => service.send({ type: 'PREVIOUS' })}
       >
         previous
       </button>
       <button
         type="button"
-        onClick={() => send({ type: 'NEXT' })}
+        onClick={() => service.send({ type: 'NEXT' })}
       >
         next
       </button>
       <p>
         state:
         {' '}
-        {JSON.stringify(state)}
+        {JSON.stringify(state.value)}
       </p>
     </>
     )}
@@ -70,12 +69,12 @@ const MyComponent = () => (
 );
 ```
 
-## Example 2 - triggering an action
+## Example 2 - options (with actions)
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const config = {
+const machineConfig = {
   key: 'example2',
   strict: true,
   initial: 'step1',
@@ -100,36 +99,37 @@ const config = {
   },
 };
 
-// an object that maps actions defined in the config to functions you want those actions to trigger (http://davidkpiano.github.io/xstate/docs/#/api/actions)
-const actionMap = {
-  myAction: () => {
-    console.log('myAction fired');
+const machineOptions = {
+  actions: {
+    myAction: () => {
+      console.log('myAction fired');
+    },
   },
 };
 
 const MyComponent = () => (
   <Machine
-    config={config}
-    actionMap={actionMap}
+    config={machineConfig}
+    options={machineOptions}
   >
-    {({ send, state }) => (
+    {({ service, state }) => (
     <>
       <button
         type="button"
-        onClick={() => send({ type: 'PREVIOUS' })}
+        onClick={() => service.send({ type: 'PREVIOUS' })}
       >
         previous
       </button>
       <button
         type="button"
-        onClick={() => send({ type: 'NEXT' })}
+        onClick={() => service.send({ type: 'NEXT' })}
       >
         next
       </button>
       <p>
         state:
         {' '}
-        {JSON.stringify(state)}
+        {JSON.stringify(state.value)}
       </p>
     </>
     )}
@@ -137,14 +137,20 @@ const MyComponent = () => (
 );
 ```
 
-## Example 3 - an action's function changing the state
+## Example 3 - context
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
+import { actions } from 'xstate';
 
-const config = {
+const { assign } = actions;
+
+const machineConfig = {
   key: 'example3',
   strict: true,
+  context: {
+    foo: '',
+  },
   initial: 'step1',
   states: {
     step1: {
@@ -167,191 +173,40 @@ const config = {
   },
 };
 
-const actionMap = {
-  // actions receive an event & send parameter (incase the action's function needs to read event data or change the state)
-  myAction: (event, send) => {
-    console.log('myAction fired');
-    setTimeout(
-      () => send({ type: 'NEXT' }),
-      500,
-    );
+const machineOptions = {
+  actions: {
+    myAction: assign({ foo: ctx => 'bar' }),
   },
 };
 
 const MyComponent = () => (
   <Machine
-    config={config}
-    actionMap={actionMap}
+    config={machineConfig}
+    options={machineOptions}
   >
-    {({ send, state }) => (
+    {({ service, state }) => (
     <>
       <button
         type="button"
-        onClick={() => send({ type: 'PREVIOUS' })}
+        onClick={() => service.send({ type: 'PREVIOUS' })}
       >
         previous
       </button>
       <button
         type="button"
-        onClick={() => send({ type: 'NEXT' })}
+        onClick={() => service.send({ type: 'NEXT' })}
       >
         next
       </button>
       <p>
         state:
         {' '}
-        {JSON.stringify(state)}
-      </p>
-    </>
-    )}
-  </Machine>
-);
-```
-
-## Example 4 - an action's function returning data
-```js
-import React from 'react';
-import { Machine } from 'react-xstate-js';
-
-const actionMap = {
-  // anything returned from the actionMap will be stored in the data property (this is useful for scenarios where an action triggers a function that fetches data)
-  myAction: () => {
-    console.log('myAction fired');
-    return { foo: 'bar' };
-  },
-};
-
-const config = {
-  key: 'example4',
-  strict: true,
-  initial: 'step1',
-  states: {
-    step1: {
-      on: {
-        NEXT: 'step2',
-      },
-    },
-    step2: {
-      onEntry: ['myAction'],
-      on: {
-        PREVIOUS: 'step1',
-        NEXT: 'step3',
-      },
-    },
-    step3: {
-      on: {
-        PREVIOUS: 'step2',
-      },
-    },
-  },
-};
-
-const MyComponent = () => (
-  <Machine
-    config={config}
-    actionMap={actionMap}
-  >
-    // data contains anything returned from the actionMap
-    {({ send, state, data }) => (
-    <>
-      <button
-        type="button"
-        onClick={() => send({ type: 'PREVIOUS' })}
-      >
-        previous
-      </button>
-      <button
-        type="button"
-        onClick={() => send({ type: 'NEXT' })}
-      >
-        next
-      </button>
-      <p>
-        state:
-        {' '}
-        {JSON.stringify(state)}
+        {JSON.stringify(state.value)}
       </p>
       <p>
-        data:
+        context:
         {' '}
-        {JSON.stringify(data)}
-      </p>
-    </>
-    )}
-  </Machine>
-);
-```
-
-## Example 5 - using the defaultData prop
-```js
-import React from 'react';
-import { Machine } from 'react-xstate-js';
-
-const defaultData = {
-  foo: 'myDefaultValue',
-};
-
-const actionMap = {
-  myAction: () => {
-    console.log('myAction fired');
-    return { foo: 'bar' };
-  },
-};
-
-const config = {
-  key: 'example5',
-  strict: true,
-  initial: 'step1',
-  states: {
-    step1: {
-      on: {
-        NEXT: 'step2',
-      },
-    },
-    step2: {
-      onEntry: ['myAction'],
-      on: {
-        PREVIOUS: 'step1',
-        NEXT: 'step3',
-      },
-    },
-    step3: {
-      on: {
-        PREVIOUS: 'step2',
-      },
-    },
-  },
-};
-
-const MyComponent = () => (
-  <Machine
-    config={config}
-    actionMap={actionMap}
-    defaultData={defaultData}
-  >
-    {({ send, state, data }) => (
-    <>
-      <button
-        type="button"
-        onClick={() => send({ type: 'PREVIOUS' })}
-      >
-        previous
-      </button>
-      <button
-        type="button"
-        onClick={() => send({ type: 'NEXT' })}
-      >
-        next
-      </button>
-      <p>
-        state:
-        {' '}
-        {JSON.stringify(state)}
-      </p>
-      <p>
-        data:
-        {' '}
-        {JSON.stringify(data)}
+        {JSON.stringify(state.context)}
       </p>
     </>
     )}
@@ -365,21 +220,20 @@ A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davi
 ```js
 <Machine
   config={...}
-  actionMap={...}
-  defaultData={...}
+  options={...}
 >
-  {({ send, state, data }) => (
+  {({ service, state }) => (
     ...
   )}
 </Machine>
 ```
 
 ### Props
-#### config: object
-A xstate [machine config](http://davidkpiano.github.io/xstate/docs/#/api/config).
+#### config: xstate [machine config](https://xstate.js.org/docs/api/interfaces/machineconfig.html).
 ```js
-const config = {
+const machineConfig = {
   key: 'example1',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
@@ -402,39 +256,32 @@ const config = {
 };
 ```
 
-#### actionMap: object
-An object that maps [actions](http://davidkpiano.github.io/xstate/docs/#/api/actions) defined in the config to functions you want those actions to trigger:
-- key: string
-- value: function
-Functions receive an event & send parameter (incase the action's function needs to read event data or change the state). Anything returned from an action's function will be stored in the `<Machine />`'s data object (see below).
+#### options: xstate [machine options](https://xstate.js.org/docs/api/interfaces/machineoptions.html).
 ```js
-const actionMap = {
-  myAction: (event, send) => {
-    console.log('myAction fired');
+const machineOptions = {
+  actions: {
+    myAction: () => {
+      console.log('myAction fired');
+    },
   },
 };
 ```
 
-#### defaultData: object
-The default value of data (useful for setting the initial values of input elements) 
-```js
-const defaultData = {
-  foo: 'defaultValue'
-};
-```
-
 ### Return
-#### send: function
-Call this function passing in an object with the following properties:
-- type: [event](http://davidkpiano.github.io/xstate/docs/#/api/config?id=transition-configuration)
-- any other properties/ values that may be required of the actionMap functions (example: email & password for a sign-in function).
-
+#### service: xstate [interpreter](https://xstate.js.org/docs/guides/interpretation/).
 ```js
-send({ type: 'NEXT' })
+<Machine {...} >
+  {({ service }) => (
+    ...
+  )}
+</Machine>
 ```
 
-#### state: string | object
-The current state.
-
-#### data: object
-Provides access to anything returned from the actionMap's functions.
+#### state: xstate [state](https://xstate.js.org/docs/api/classes/state.html).
+```js
+<Machine {...} >
+  {({ state }) => (
+    ...
+  )}
+</Machine>
+```

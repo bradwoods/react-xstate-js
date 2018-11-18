@@ -1,39 +1,18 @@
-import {
-  // MachineConfig, ParallelMachineConfig,
-  StateInterface
-} from 'xstate/lib/types'
-
-export interface IEvent {
-  type: string
-  [key: string]: any
-}
-
-export interface IData {
-  [key: string]: any
-}
-
-export type Send = (event: IEvent) => void
-
-export interface IActionMap {
-  [key: string]: (event?: IEvent, send?: Send) => IData | void
-}
+import { MachineConfig, MachineOptions, ServiceConfig } from 'xstate/lib/types'
+import { Interpreter } from 'xstate/lib/interpreter'
+import { State } from 'xstate'
 
 export interface IReturnProps {
-  state: any
-  send: Send
-  data: IData
+  state: State<any, any>
+  service: Interpreter<any, any, any>
 }
 
 export interface IProps {
-  // see workaround stated in ./Machine/index.tsx
-  // config: MachineConfig | ParallelMachineConfig
-  config: any
-  actionMap?: IActionMap
-  defaultData?: IData
+  config: MachineConfig<any, any, any>
+  options?: MachineOptions<any, any>
   children: (args: IReturnProps) => JSX.Element
 }
 
 export interface IState {
-  data: IData
-  machineStateNode: StateInterface
+  machineStateNode: State<any, any>
 }
