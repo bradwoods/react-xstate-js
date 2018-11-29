@@ -229,7 +229,7 @@ A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davi
 ```
 
 ### Props
-#### config: xstate [machine config](https://xstate.js.org/docs/api/interfaces/machineconfig.html).
+#### config: xstate [machine config](https://xstate.js.org/api/interfaces/machineconfig.html).
 ```js
 const machineConfig = {
   key: 'example1',
@@ -256,7 +256,7 @@ const machineConfig = {
 };
 ```
 
-#### options: xstate [machine options](https://xstate.js.org/docs/api/interfaces/machineoptions.html).
+#### options: xstate [machine options](https://xstate.js.org/api/interfaces/machineoptions.html).
 ```js
 const machineOptions = {
   actions: {
@@ -268,7 +268,7 @@ const machineOptions = {
 ```
 
 ### Return
-#### service: xstate [interpreter](https://xstate.js.org/docs/guides/interpretation/).
+#### service: xstate [interpreter](https://xstate.js.org/docs/guides/interpretation.html).
 ```js
 <Machine {...} >
   {({ service }) => (
@@ -277,7 +277,7 @@ const machineOptions = {
 </Machine>
 ```
 
-#### state: xstate [state](https://xstate.js.org/docs/api/classes/state.html).
+#### state: xstate [state](https://xstate.js.org/api/classes/state.html).
 ```js
 <Machine {...} >
   {({ state }) => (
