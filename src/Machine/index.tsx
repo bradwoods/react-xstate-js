@@ -3,20 +3,17 @@ import {
   Machine as XstateMachine, 
 } from 'xstate';
 import { 
-  interpret, Interpreter 
+  interpret
 } from 'xstate/lib/interpreter';
-import {
-  StateMachine, 
-} from 'xstate/lib/types'
 import {
   IState, IProps,
 } from '../types'
 
 class Machine extends React.Component<IProps, IState> {
 
-  private machine: StateMachine<any, any, any> = XstateMachine(this.props.config, this.props.options || {}, undefined)
+  private machine = XstateMachine(this.props.config, this.props.options || {}, undefined)
 
-  service: Interpreter<any, any, any> = interpret(this.machine)
+  service = interpret(this.machine)
 
   readonly state: IState = {
     machineStateNode: this.machine.initialState,
