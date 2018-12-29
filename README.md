@@ -11,13 +11,16 @@ npm i react-xstate-js -S
 ```
 
 # Using
+A playground with the following examples can be found [here](https://github.com/bradwoods/react-xstate-js-playground).
+
 ## Example 1 - reading & changing state
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const myMachineConfig = {
+const machineConfig = {
   key: 'example1',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
@@ -40,7 +43,7 @@ const myMachineConfig = {
 };
 
 const MyComponent = () => (
-  <Machine config={myMachineConfig}>
+  <Machine config={machineConfig}>
     {({ service, state }) => (
     <>
       <button
@@ -71,8 +74,9 @@ const MyComponent = () => (
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const myMachineConfig = {
+const machineConfig = {
   key: 'example2',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
@@ -95,7 +99,7 @@ const myMachineConfig = {
   },
 };
 
-const myMachineOptions = {
+const machineOptions = {
   actions: {
     myAction: () => {
       console.log('myAction fired');
@@ -105,8 +109,8 @@ const myMachineOptions = {
 
 const MyComponent = () => (
   <Machine
-    config={myMachineConfig}
-    options={myMachineOptions}
+    config={machineConfig}
+    options={machineOptions}
   >
     {({ service, state }) => (
     <>
@@ -141,8 +145,9 @@ import { actions } from 'xstate';
 
 const { assign } = actions;
 
-const myMachineConfig = {
+const machineConfig = {
   key: 'example3',
+  strict: true,
   context: {
     foo: '',
   },
@@ -168,7 +173,7 @@ const myMachineConfig = {
   },
 };
 
-const myMachineOptions = {
+const machineOptions = {
   actions: {
     myAction: assign({ foo: ctx => 'bar' }),
   },
@@ -176,8 +181,8 @@ const myMachineOptions = {
 
 const MyComponent = () => (
   <Machine
-    config={myMachineConfig}
-    options={myMachineOptions}
+    config={machineConfig}
+    options={machineOptions}
   >
     {({ service, state }) => (
     <>
@@ -226,8 +231,9 @@ A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davi
 ### Props
 #### config: xstate [machine config](https://xstate.js.org/api/interfaces/machineconfig.html).
 ```js
-const mmyMachineConfig = {
+const machineConfig = {
   key: 'example1',
+  strict: true,
   initial: 'step1',
   states: {
     step1: {
@@ -252,7 +258,7 @@ const mmyMachineConfig = {
 
 #### options: xstate [machine options](https://xstate.js.org/api/interfaces/machineoptions.html).
 ```js
-const myMachineOptions = {
+const machineOptions = {
   actions: {
     myAction: () => {
       console.log('myAction fired');

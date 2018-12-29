@@ -25,4 +25,4 @@ export interface IState<TContext = any, TEvent extends EventObject = any> {
   machineStateNode: State<TContext, TEvent>
 }
 
-export { MachineConfig, State, Interpreter }
+export { MachineConfig, State, Interpreter, MachineOptions }
