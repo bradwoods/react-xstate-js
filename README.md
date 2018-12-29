@@ -286,7 +286,7 @@ const MyComponent: React.SFC = () => (
 import React from 'react';
 import { 
   Machine, assign 
-  } from 'react-xstate-js';
+} from 'react-xstate-js';
 
 const myMachineConfig = {
   key: 'example3',
