@@ -4,19 +4,19 @@ import { State } from 'xstate'
 
 export interface IReturnProps<
   TContext = any,
-  TState extends StateSchema = any,
+  TStateSchema extends StateSchema = any,
   TEvent extends EventObject = any
 > {
   state: State<TContext, TEvent>
-  service: Interpreter<TContext, TState, TEvent>
+  service: Interpreter<TContext, TStateSchema, TEvent>
 }
 
 export interface IProps<
   TContext = any,
-  TState extends StateSchema = any,
+  TStateSchema extends StateSchema = any,
   TEvent extends EventObject = any
 > {
-  config: MachineConfig<TContext, TState, TEvent>
+  config: MachineConfig<TContext, TStateSchema, TEvent>
   options?: MachineOptions<TContext, TEvent>
   children: (args: IReturnProps) => JSX.Element | null
 }
