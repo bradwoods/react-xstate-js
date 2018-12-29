@@ -11,16 +11,13 @@ npm i react-xstate-js -S
 ```
 
 # Using
-A playground with the following examples can be found [here](https://github.com/bradwoods/react-xstate-js-playground).
-
 ## Example 1 - reading & changing state
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const machineConfig = {
+const myMachineConfig = {
   key: 'example1',
-  strict: true,
   initial: 'step1',
   states: {
     step1: {
@@ -43,7 +40,7 @@ const machineConfig = {
 };
 
 const MyComponent = () => (
-  <Machine config={machineConfig}>
+  <Machine config={myMachineConfig}>
     {({ service, state }) => (
     <>
       <button
@@ -69,14 +66,81 @@ const MyComponent = () => (
 );
 ```
 
+## Example 1 - TypeScript
+```tsx
+import React from 'react';
+import { 
+  MachineConfig, Machine, State, Interpreter
+} from 'react-xstate-js'
+
+interface MyStateSchema {
+  states: {
+    step1: {}
+    step2: {}
+    step3: {}
+  }
+}
+
+type MyEvent = { type: 'NEXT' } 
+  | { type: 'PREVIOUS' }
+
+const myMachineConfig: MachineConfig<{}, MyStateSchema, MyEvent> = {
+  key: 'example1',
+  initial: 'step1',
+  states: {
+    step1: {
+      on: {
+        NEXT: 'step2',
+      },
+    },
+    step2: {
+      on: {
+        PREVIOUS: 'step1',
+        NEXT: 'step3',
+      },
+    },
+    step3: {
+      on: {
+        PREVIOUS: 'step2',
+      },
+    },
+  },
+}
+
+const MyComponent: React.SFC = () => (
+  <Machine config={myMachineConfig}>
+    {({ service, state }: { service: Interpreter<{}, MyStateSchema, MyEvent>, state: State<{}, MyEvent> }) => (
+      <>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'PREVIOUS' })}
+        >
+          previous
+        </button>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'NEXT' })}
+        >
+          next
+        </button>
+        <p>
+          state:
+          {' '}
+          {JSON.stringify(state.value)}
+        </p>
+      </>
+    )}
+  </Machine>
+)
+```
+
 ## Example 2 - options (with actions)
 ```js
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
-const machineConfig = {
+const myMachineConfig = {
   key: 'example2',
-  strict: true,
   initial: 'step1',
   states: {
     step1: {
@@ -99,7 +163,7 @@ const machineConfig = {
   },
 };
 
-const machineOptions = {
+const myMachineOptions = {
   actions: {
     myAction: () => {
       console.log('myAction fired');
@@ -109,8 +173,8 @@ const machineOptions = {
 
 const MyComponent = () => (
   <Machine
-    config={machineConfig}
-    options={machineOptions}
+    config={myMachineConfig}
+    options={myMachineOptions}
   >
     {({ service, state }) => (
     <>
@@ -137,17 +201,96 @@ const MyComponent = () => (
 );
 ```
 
+## Example 2 - TypeScript
+```tsx
+import React from 'react';
+import {
+  MachineConfig, MachineOptions, Machine, State, Interpreter
+} from 'react-xstate-js'
+
+interface MyStateSchema {
+  states: {
+    step1: {}
+    step2: {}
+    step3: {}
+  }
+}
+
+type MyEvent = { type: 'NEXT' }
+  | { type: 'PREVIOUS' }
+
+const myMachineConfig: MachineConfig<{}, MyStateSchema, MyEvent> = {
+  key: 'example1',
+  initial: 'step1',
+  states: {
+    step1: {
+      on: {
+        NEXT: 'step2',
+      },
+    },
+    step2: {
+      onEntry: ['myAction'],
+      on: {
+        PREVIOUS: 'step1',
+        NEXT: 'step3',
+      },
+    },
+    step3: {
+      on: {
+        PREVIOUS: 'step2',
+      },
+    },
+  },
+}
+
+const myMachineOptions: MachineOptions<{}, MyEvent> = {
+  actions: {
+    myAction: () => {
+      console.log('myAction fired');
+    },
+  },
+};
+
+const MyComponent: React.SFC = () => (
+  <Machine 
+    config={myMachineConfig}
+    options={myMachineOptions}
+  >
+    {({ service, state }: { service: Interpreter<{}, MyStateSchema, MyEvent>, state: State<{}, MyEvent> }) => (
+      <>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'PREVIOUS' })}
+        >
+          previous
+        </button>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'NEXT' })}
+        >
+          next
+        </button>
+        <p>
+          state:
+          {' '}
+          {JSON.stringify(state.value)}
+        </p>
+      </>
+    )}
+  </Machine>
+)
+```
+
 ## Example 3 - context
-```js
+```jsx
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 import { actions } from 'xstate';
 
 const { assign } = actions;
 
-const machineConfig = {
+const myMachineConfig = {
   key: 'example3',
-  strict: true,
   context: {
     foo: '',
   },
@@ -173,16 +316,16 @@ const machineConfig = {
   },
 };
 
-const machineOptions = {
+const myMachineOptions = {
   actions: {
-    myAction: assign({ foo: ctx => 'bar' }),
+    myAction: assign({ foo: () => 'bar' }),
   },
 };
 
 const MyComponent = () => (
   <Machine
-    config={machineConfig}
-    options={machineOptions}
+    config={myMachineConfig}
+    options={myMachineOptions}
   >
     {({ service, state }) => (
     <>
@@ -214,10 +357,100 @@ const MyComponent = () => (
 );
 ```
 
+## Example 3 - TypeScript
+```tsx
+import React from 'react';
+import {
+  MachineConfig, MachineOptions, Machine, State, Interpreter, assign
+} from 'react-xstate-js'
+
+interface MyContext {
+  foo: string
+}
+
+interface MyStateSchema {
+  states: {
+    step1: {}
+    step2: {}
+    step3: {}
+  }
+}
+
+type MyEvent = { type: 'NEXT' }
+  | { type: 'PREVIOUS' }
+
+const myMachineConfig: MachineConfig<MyContext, MyStateSchema, MyEvent> = {
+  key: 'example1',
+  context: {
+    foo: '',
+  },
+  initial: 'step1',
+  states: {
+    step1: {
+      on: {
+        NEXT: 'step2',
+      },
+    },
+    step2: {
+      onEntry: ['myAction'],
+      on: {
+        PREVIOUS: 'step1',
+        NEXT: 'step3',
+      },
+    },
+    step3: {
+      on: {
+        PREVIOUS: 'step2',
+      },
+    },
+  },
+}
+
+const myMachineOptions: MachineOptions<MyContext, MyEvent> = {
+  actions: {
+    myAction: assign({ foo: () => 'bar' }),
+  },
+};
+
+const MyComponent: React.SFC = () => (
+  <Machine
+    config={myMachineConfig}
+    options={myMachineOptions}
+  >
+    {({ service, state }: { service: Interpreter<MyContext, MyStateSchema, MyEvent>, state: State<MyContext, MyEvent> }) => (
+      <>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'PREVIOUS' })}
+        >
+          previous
+        </button>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'NEXT' })}
+        >
+          next
+        </button>
+        <p>
+          state:
+          {' '}
+          {JSON.stringify(state.value)}
+        </p>
+        <p>
+          context:
+          {' '}
+          {JSON.stringify(state.context)}
+        </p>
+      </>
+    )}
+  </Machine>
+)
+```
+
 # API
 ## \<Machine \/\>
 A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davidkpiano/xstate).
-```js
+```jsx
 <Machine
   config={...}
   options={...}
@@ -231,9 +464,8 @@ A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davi
 ### Props
 #### config: xstate [machine config](https://xstate.js.org/api/interfaces/machineconfig.html).
 ```js
-const machineConfig = {
+const mmyMachineConfig = {
   key: 'example1',
-  strict: true,
   initial: 'step1',
   states: {
     step1: {
@@ -258,7 +490,7 @@ const machineConfig = {
 
 #### options: xstate [machine options](https://xstate.js.org/api/interfaces/machineoptions.html).
 ```js
-const machineOptions = {
+const myMachineOptions = {
   actions: {
     myAction: () => {
       console.log('myAction fired');
@@ -269,7 +501,7 @@ const machineOptions = {
 
 ### Return
 #### service: xstate [interpreter](https://xstate.js.org/docs/guides/interpretation.html).
-```js
+```jsx
 <Machine {...} >
   {({ service }) => (
     ...
@@ -278,7 +510,7 @@ const machineOptions = {
 ```
 
 #### state: xstate [state](https://xstate.js.org/api/classes/state.html).
-```js
+```jsx
 <Machine {...} >
   {({ state }) => (
     ...
