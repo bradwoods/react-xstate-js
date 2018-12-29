@@ -284,10 +284,9 @@ const MyComponent: React.SFC = () => (
 ## Example 3 - context
 ```jsx
 import React from 'react';
-import { Machine } from 'react-xstate-js';
-import { actions } from 'xstate';
-
-const { assign } = actions;
+import { 
+  Machine, assign 
+  } from 'react-xstate-js';
 
 const myMachineConfig = {
   key: 'example3',
