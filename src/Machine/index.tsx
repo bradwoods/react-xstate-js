@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Machine as XstateMachine, 
+  Machine as XstateMachine, State
 } from 'xstate';
 import { 
   interpret
@@ -20,12 +20,18 @@ class Machine extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
+    const { savedState } = this.props
+
     this.service = interpret(this.machine)
       .onTransition(nextState => {
         this.setState({ machineStateNode: nextState });
       });
 
-    this.service.start();
+    if (savedState) {
+      const restoredState = State.create(savedState)
+      this.service.start(restoredState)
+    }
+    else this.service.start();
   }
 
   componentWillUnmount() {
