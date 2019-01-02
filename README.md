@@ -12,7 +12,7 @@ npm i react-xstate-js -S
 
 # Using
 ## Example 1 - reading & changing state
-```js
+```jsx
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
@@ -135,7 +135,7 @@ const MyComponent: React.SFC = () => (
 ```
 
 ## Example 2 - options (with actions)
-```js
+```jsx
 import React from 'react';
 import { Machine } from 'react-xstate-js';
 
@@ -446,6 +446,149 @@ const MyComponent: React.SFC = () => (
 )
 ```
 
+## Example 4 - persisting state
+```jsx
+import React from 'react';
+import {
+  Machine,
+} from 'react-xstate-js'
+
+const myMachineConfig = {
+  key: 'example1',
+  initial: 'step1',
+  states: {
+    step1: {
+      on: {
+        NEXT: 'step2',
+      },
+    },
+    step2: {
+      on: {
+        PREVIOUS: 'step1',
+        NEXT: 'step3',
+      },
+    },
+    step3: {
+      on: {
+        PREVIOUS: 'step2',
+      },
+    },
+  },
+}
+
+const mySavedJSONState = `{ "actions": [], "activities": {}, "meta": {}, "events": [], "value": "step3", "event": { "type": "NEXT" }, "historyValue": { "current": "step3", "states": {} }, "history": { "actions": [], "activities": {}, "meta": {}, "events": [], "value": "step2", "event": { "type": "NEXT" }, "historyValue": { "current": "step2", "states": {} }, "history": { "actions": [], "activities": {}, "meta": {}, "events": [], "value": "step1", "event": { "type": "xstate.init" } } } }`
+
+const mySavedState = JSON.parse(mySavedJSONState)
+
+const MyComponent = () => (
+  <Machine 
+    config={myMachineConfig}
+    savedState={mySavedState}
+  >
+    {({ service, state }) => (
+      <>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'PREVIOUS' })}
+        >
+          previous
+      </button>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'NEXT' })}
+        >
+          next
+      </button>
+        <p>
+          state:
+          {' '}
+          {JSON.stringify(state.value)}
+        </p>
+      </>
+    )}
+  </Machine>
+)
+
+export default MyComponent
+```
+
+## Example 4 - TypeScript
+```tsx
+import React from 'react';
+import {
+  MachineConfig, Machine, State, Interpreter
+} from 'react-xstate-js'
+
+interface MyStateSchema {
+  states: {
+    step1: {}
+    step2: {}
+    step3: {}
+  }
+}
+
+type MyEvent = { type: 'NEXT' }
+  | { type: 'PREVIOUS' }
+
+const myMachineConfig: MachineConfig<{}, MyStateSchema, MyEvent> = {
+  key: 'example1',
+  initial: 'step1',
+  states: {
+    step1: {
+      on: {
+        NEXT: 'step2',
+      },
+    },
+    step2: {
+      on: {
+        PREVIOUS: 'step1',
+        NEXT: 'step3',
+      },
+    },
+    step3: {
+      on: {
+        PREVIOUS: 'step2',
+      },
+    },
+  },
+}
+
+const mySavedJSONState = `{ "actions": [], "activities": {}, "meta": {}, "events": [], "value": "step3", "event": { "type": "NEXT" }, "historyValue": { "current": "step3", "states": {} }, "history": { "actions": [], "activities": {}, "meta": {}, "events": [], "value": "step2", "event": { "type": "NEXT" }, "historyValue": { "current": "step2", "states": {} }, "history": { "actions": [], "activities": {}, "meta": {}, "events": [], "value": "step1", "event": { "type": "xstate.init" } } } }`
+
+const mySavedState: State<{}, MyEvent> = JSON.parse(mySavedJSONState)
+
+const MyComponent: React.SFC = () => (
+  <Machine 
+    config={myMachineConfig}
+    savedState={mySavedState}
+  >
+    {({ service, state }: { service: Interpreter<{}, MyStateSchema, MyEvent>, state: State<{}, MyEvent> }) => (
+      <>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'PREVIOUS' })}
+        >
+          previous
+      </button>
+        <button
+          type="button"
+          onClick={() => service.send({ type: 'NEXT' })}
+        >
+          next
+      </button>
+        <p>
+          state:
+          {' '}
+          {JSON.stringify(state.value)}
+        </p>
+      </>
+    )}
+  </Machine>
+)
+
+export default MyComponent
+```
+
 # API
 ## \<Machine \/\>
 A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davidkpiano/xstate).
@@ -495,6 +638,52 @@ const myMachineOptions = {
       console.log('myAction fired');
     },
   },
+};
+```
+
+#### savedState: xstate [State](https://xstate.js.org/api/classes/state.html).
+```js
+const savedState = {
+  "actions": [],
+  "activities": {},
+  "meta": {},
+  "events": [],
+  "value": "step3",
+  "event": {
+    "type": "NEXT"
+  },
+  "historyValue": {
+    "current": "step3",
+    "states": {}
+  },
+  "history": {
+    "actions": [],
+    "activities": {},
+    "meta": {},
+    "events": [],
+    "value": "step2",
+    "event": {
+      "type": "NEXT"
+    },
+    "historyValue": {
+      "current": "step2",
+      "states": {}
+    },
+    "history": {
+      "actions": [],
+      "activities": {},
+      "meta": {},
+      "events": [],
+      "value": "step1",
+      "event": {
+        "type": "PREVIOUS"
+      },
+      "historyValue": {
+        "current": "step1",
+        "states": {}
+      }
+    }
+  }
 };
 ```
 
