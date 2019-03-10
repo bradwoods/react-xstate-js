@@ -1,5 +1,5 @@
 # react-xstate-js
-A React interpreter for [xstate](https://github.com/davidkpiano/xstate) that uses renderProps.
+A React interpreter for [XState](https://github.com/davidkpiano/xstate) that uses renderProps.
 
 # Installation
 ```bash
@@ -606,7 +606,7 @@ A [React](https://reactjs.org/) interpreter for [xstate](https://github.com/davi
 ### Props
 #### config: xstate [machine config](https://xstate.js.org/api/interfaces/machineconfig.html).
 ```js
-const mmyMachineConfig = {
+const myMachineConfig = {
   key: 'example1',
   initial: 'step1',
   states: {
@@ -643,7 +643,7 @@ const myMachineOptions = {
 
 #### savedState: xstate [State](https://xstate.js.org/api/classes/state.html).
 ```js
-const savedState = {
+const mySavedState = {
   "actions": [],
   "activities": {},
   "meta": {},
@@ -685,6 +685,13 @@ const savedState = {
     }
   }
 };
+```
+
+#### savedContext: any.
+```js
+const mySavedContext = {
+  myKeg: 'myValue'
+}
 ```
 
 ### Return
