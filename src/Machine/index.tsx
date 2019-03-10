@@ -11,7 +11,7 @@ import {
 
 class Machine extends React.Component<IProps, IState> {
 
-  private machine = XstateMachine(this.props.config, this.props.options || {}, undefined)
+  private machine = XstateMachine(this.props.config, this.props.options || {}, this.props.savedContext)
 
   service = interpret(this.machine)
 

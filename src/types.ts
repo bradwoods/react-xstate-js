@@ -19,6 +19,7 @@ export interface IProps<
   config: MachineConfig<TContext, TStateSchema, TEvent>
   options?: MachineOptions<TContext, TEvent>
   savedState?: State<TContext, TEvent>
+  savedContext?: TContext
   children: (args: IReturnProps) => JSX.Element | null
 }
 
