@@ -1,3 +1,10 @@
+# ARCHIVED
+As XState has released its own [React interpreter](https://xstate.js.org/docs/packages/xstate-react/#quick-start), this repo has been archived.
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 # react-xstate-js
 A React interpreter for [XState](https://github.com/davidkpiano/xstate) that uses renderProps.
 
